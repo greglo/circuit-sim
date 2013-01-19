@@ -3,17 +3,16 @@ package model.gates.basic;
 import model.gates.AbstractGate;
 
 public class XorGateFactory implements GateFactory {
-
+    public final static XorGateFactory INSTANCE = new XorGateFactory();
+    
     @Override
     public AbstractGate newGate() {
-	// TODO Auto-generated method stub
-	return null;
+	return new Xor(2);
     }
 
     @Override
     public AbstractGate newGate(int numInputs) {
-	// TODO Auto-generated method stub
-	return null;
+	return new Xor(numInputs);
     }
 
     private class Xor extends AbstractGate {
