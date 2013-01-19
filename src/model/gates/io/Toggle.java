@@ -2,18 +2,18 @@ package model.gates.io;
 
 import model.gates.AbstractGate;
 
-public class Switch extends AbstractInput {
+public class Toggle extends AbstractInput {
     private boolean isOn = false;
     
-    public Switch() {
+    public Toggle() {
 	super(1);
     }
     
     public void setOn(boolean isOn) {
 	if (this.isOn != isOn) {
 	    this.isOn = isOn;
-	    computeOutput();
-	    fireGateIOChanged();
+	    computeOutputs();
+	    fireGateOutputChanged();
 	}
     }
     
@@ -22,15 +22,15 @@ public class Switch extends AbstractInput {
     }
 
     @Override
-    public void computeOutput() {
-	outputs[0] = isOn;
+    public void computeOutputs() {
+	setOutput(0, isOn);
     }
 
     @Override
     public AbstractGate clone() {
-	Switch newSwitch = new Switch();
-	newSwitch.setOn(isOn);
-	return newSwitch;
+	Toggle newToggle = new Toggle();
+	newToggle.setOn(isOn);
+	return newToggle;
     }
 
 }

@@ -4,14 +4,14 @@ import model.circuit.ClockSignalListener;
 import model.gates.AbstractGate;
 
 public class Clock extends AbstractInput implements ClockSignalListener {
-    private final Switch internalSwitch;
+    private final Toggle internalToggle;
     private final long period;
     
     public Clock(long period) {
 	super(1);
-	this.internalSwitch = new Switch();
+	this.internalToggle = new Toggle();
 	this.period = period;
-	computeOutput();
+	computeOutputs();
     }
     
     public long getPeriod() {
@@ -21,15 +21,15 @@ public class Clock extends AbstractInput implements ClockSignalListener {
     @Override
     public void updateTime(long time) {
 	if (time % period == 0) {
-	    internalSwitch.flip();
-	    computeOutput();
+	    internalToggle.flip();
+	    computeOutputs();
 	}
     }
 
     @Override
-    protected void computeOutput() {
-	if (internalSwitch != null)
-	    outputs[0] = internalSwitch.getOutput(0);
+    protected void computeOutputs() {
+	if (internalToggle != null)
+	    setOutput(0, internalToggle.getOutput(0));
     }
 
     @Override
