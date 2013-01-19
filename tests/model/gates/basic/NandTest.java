@@ -10,7 +10,7 @@ public class NandTest {
 
     @Test
     public void test() {
-	AbstractGate nand = NandGateFactory.INSTANCE.newGate(2);
+	AbstractGate nand = new Nand(2);
 
 	assertTrue("0 NAND 0 == 1", nand.getOutput(0));
 	nand.setInput(0, true);

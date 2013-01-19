@@ -10,7 +10,7 @@ public class NotTest {
 
     @Test
     public void testOneInput() {
-	AbstractGate not = NotGateFactory.INSTANCE.newGate(1);
+	AbstractGate not = new Not(1);
 	
 	not.setInput(0, false);
 	assertTrue("!false == true", not.getOutput(0));

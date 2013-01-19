@@ -10,7 +10,7 @@ public class NorTest {
 
     @Test
     public void test() {
-	AbstractGate Nor = NorGateFactory.INSTANCE.newGate(2);
+	AbstractGate Nor = new Nor(2);
 
 	assertTrue("0 NOR 0 == 1", Nor.getOutput(0));
 	Nor.setInput(0, true);

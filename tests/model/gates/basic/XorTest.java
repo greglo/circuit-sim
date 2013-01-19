@@ -10,7 +10,7 @@ public class XorTest {
 
     @Test
     public void test() {
-	AbstractGate xor = XorGateFactory.INSTANCE.newGate(2);
+	AbstractGate xor = new Xor(2);
 	
 	assertFalse("0 XOR 0 == 0", xor.getOutput(0));
 	xor.setInput(0, true);

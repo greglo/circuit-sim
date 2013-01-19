@@ -10,7 +10,7 @@ public class OrTest {
 
     @Test
     public void test() {
-	AbstractGate or = OrGateFactory.INSTANCE.newGate(2);
+	AbstractGate or = new Or(2);
 	
 	assertFalse("0 OR 0 == 0", or.getOutput(0));
 	or.setInput(0, true);

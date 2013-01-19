@@ -8,14 +8,12 @@ import java.util.Map;
 import java.util.Set;
 
 import model.gates.AbstractGate;
-import model.gates.InputJack;
-import model.gates.OutputJack;
-import model.gates.OutputJackListener;
+import model.gates.Jack;
 
 
-public class Circuit implements OutputJackListener {
+public class Circuit {
     private final Set<AbstractGate> gates = new HashSet<AbstractGate>();
-    private final Map<OutputJack, InputJack> wires = new HashMap<OutputJack, InputJack>();
+    private final Map<Jack, Jack> wires = new HashMap<Jack, Jack>();
     
     private long systemTime = 0;
     private List<ClockSignalListener> clockSignalListeners = new ArrayList<ClockSignalListener>();
@@ -43,11 +41,10 @@ public class Circuit implements OutputJackListener {
     }
 
 
-    @Override
-    public void jackStatusChanged(OutputJack jack, boolean isOn) {
+    public void jackStatusChanged(Jack jack, boolean isOn) {
 	// Propagate changes to the next wire
 	// Assume no loops (for now)!
-	InputJack nextJack = wires.get(jack);
+	Jack nextJack = wires.get(jack);
 	if (nextJack != null) {
 	    nextJack.setOn(isOn);
 	}

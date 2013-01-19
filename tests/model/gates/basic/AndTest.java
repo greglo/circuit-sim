@@ -10,7 +10,7 @@ public class AndTest {
 
     @Test
     public void test() {
-	AbstractGate and = AndGateFactory.INSTANCE.newGate(2);
+	AbstractGate and = new And(2);
 	
 	assertFalse("0 AND 0 == 0", and.getOutput(0));
 	and.setInput(0, true);
