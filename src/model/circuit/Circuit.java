@@ -9,12 +9,9 @@ import java.util.Set;
 
 import model.gates.AbstractGate;
 import model.gates.InputJack;
-import model.gates.Jack;
 import model.gates.OutputJack;
 import model.gates.OutputJackListener;
-import model.gates.basic.AndGateFactory;
-import model.gates.basic.NotGateFactory;
-import model.gates.io.Switch;
+
 
 public class Circuit implements OutputJackListener {
     private final Set<AbstractGate> gates = new HashSet<AbstractGate>();
