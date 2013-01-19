@@ -30,6 +30,8 @@ public class Circuit implements OutputJackListener {
     }
     
     private void runNotTest() {
+	// Test git
+	
 	System.out.println("NOT Test:");
 	AbstractGate not = NotGateFactory.INSTANCE.newGate(1);
 	gates.add(not);
