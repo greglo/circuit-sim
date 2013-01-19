@@ -48,10 +48,7 @@ public class OrGateFactory implements GateFactory {
 	@Override
 	public AbstractGate clone() {
 	    Or newOr = new Or(inputs.length);
-
-	    for (int i = 0; i < inputs.length; i++)
-		newOr.setInput(i, inputs[i]);
-
+	    newOr.setInputs(inputs.clone());
 	    return newOr;
 	}
 

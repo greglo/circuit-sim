@@ -48,10 +48,7 @@ public class AndGateFactory implements GateFactory {
 	@Override
 	public AbstractGate clone() {
 	    And newAnd = new And(inputs.length);
-
-	    for (int i = 0; i < inputs.length; i++)
-		newAnd.setInput(i, inputs[i]);
-
+	    newAnd.setInputs(inputs.clone());
 	    return newAnd;
 	}
 

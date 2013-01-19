@@ -25,64 +25,6 @@ public class Circuit implements OutputJackListener {
     
     
     public Circuit() {
-	runNotTest();
-	runAndTest();
-    }
-    
-    private void runNotTest() {
-	// Test git
-	
-	System.out.println("NOT Test:");
-	AbstractGate not = NotGateFactory.INSTANCE.newGate(1);
-	gates.add(not);
-	
-	Switch toggle = new Switch();
-	gates.add(toggle);
-	
-	OutputJack toggleOut = new OutputJack(toggle, 0);
-	InputJack notIn = new InputJack(not, 0);
-	wires.put(toggleOut, notIn);
-	OutputJack notOut = new OutputJack(not, 0);
-	
-	toggleOut.addListener(this);
-	notOut.addListener(this);
-	toggle.addListener(toggleOut);
-	not.addListener(notOut);
-	
-	System.out.println(notOut.isOn());
-	toggle.flip();
-	System.out.println(notOut.isOn());
-	toggle.flip();
-	System.out.println(notOut.isOn());
-    }
-    
-    private void runAndTest() {
-	System.out.println("AND Test:");
-	
-	Switch toggle1 = new Switch();
-	Switch toggle2 = new Switch();
-	OutputJack toggle1Out = new OutputJack(toggle1, 0);
-	OutputJack toggle2Out = new OutputJack(toggle2, 0);
-	
-	AbstractGate and = AndGateFactory.INSTANCE.newGate(2);
-	InputJack andIn1 = new InputJack(and, 0);
-	InputJack andIn2 = new InputJack(and, 1);
-	OutputJack andOut = new OutputJack(and, 0);
-	
-	wires.put(toggle1Out, andIn1);
-	wires.put(toggle2Out, andIn2);
-	
-	toggle1.addListener(toggle1Out);
-	toggle2.addListener(toggle2Out);
-	toggle1Out.addListener(this);
-	toggle2Out.addListener(this);
-	
-	System.out.println("0 AND 0 == " + andOut.isOn());
-	toggle1.flip();
-	System.out.println("1 AND 0 == " + andOut.isOn());
-	toggle2.flip();
-	System.out.println("1 AND 1 == " + andOut.isOn());
-
     }
     
     public long getSystemTime() {
