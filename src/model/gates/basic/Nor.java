@@ -2,6 +2,11 @@ package model.gates.basic;
 
 import model.gates.AbstractGate;
 
+/**
+ * Concrete implementation of an NOR gate
+ * @author Greg
+ *
+ */
 public class Nor extends AbstractGate {
     
     /**
