@@ -8,7 +8,7 @@ public abstract class AbstractGate {
     protected Jack inputJacks[];
     protected Jack outputJacks[];
     
-    protected final List<AbstractGateListener> listeners;
+    protected final List<GateStatusListener> listeners;
     
     /**
      * Class constructor
@@ -18,7 +18,7 @@ public abstract class AbstractGate {
     public AbstractGate(int numInputs, int numOutputs) {
 	assert(numInputs >= 0 && numOutputs >= 0);
 	
-	listeners = new ArrayList<AbstractGateListener>();
+	listeners = new ArrayList<GateStatusListener>();
 	
 	// Create input jacks
 	inputJacks = new Jack[numInputs];
@@ -163,17 +163,17 @@ public abstract class AbstractGate {
     protected abstract void computeOutputs();
     
     
-    public void addListener(AbstractGateListener l) {
+    public void addListener(GateStatusListener l) {
 	listeners.add(l);
     }
     
-    public void removeListener(AbstractGateListener l) {
+    public void removeListener(GateStatusListener l) {
 	listeners.remove(l);
     }
     
     protected void fireGateOutputChanged() {
-	for (AbstractGateListener l : listeners)
-	    l.gateOutputChanged();
+	for (GateStatusListener l : listeners)
+	    l.gateOutputChanged(this);
     }
     
     public abstract AbstractGate clone();
