@@ -2,6 +2,7 @@ package model.circuit;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -48,11 +49,31 @@ public class Circuit implements GateStatusListener {
      *            The gate to be removed
      */
     public void removeGate(AbstractGate gate) {
-	// TODO: remove wires coming to/from the gate
-	// Do we need to store two HashMaps to get optimal complexity?
-	// or am I missing something? Have a proper think at some point...
-	if (gates.remove(gate))
+	if (gates.remove(gate)) {
 	    gate.removeListener(this);
+	    
+	    // Remove all wires going into this gate
+	    Iterator<Jack> inputJackIter = gate.getInputJacks();
+	    while (inputJackIter.hasNext())
+		removeWire(inputJackIter.next());
+	    
+	    // Remove all wires coming out of this gate
+	    Iterator<Jack> outputJackIter = gate.getOutputJacks();
+	    while (outputJackIter.hasNext())
+		removeWire(outputJackIter.next());
+	}
+    }
+
+    /**
+     * Tests whether a jack is already bound to a wire in the circuit
+     * 
+     * @param jack
+     * @return
+     */
+    public boolean isJackUsed(Jack jack) {
+	boolean isOutputJack = wires.containsKey(jack);
+	boolean isInputJack = wires.containsValue(jack);
+	return (isOutputJack || isInputJack);
     }
 
     /**
@@ -72,12 +93,12 @@ public class Circuit implements GateStatusListener {
 	if (!gates.contains(inputJack.getGate()))
 	    throw new IllegalArgumentException(
 		    "Target gate does not not in the circuit!");
-	if (wires.containsKey(outputJack))
+	if (isJackUsed(outputJack))
 	    throw new IllegalArgumentException(
-		    "A wire is already coming from the output terminal!");
-	if (wires.containsValue(inputJack))
+		    "The output jack is already in use!");
+	if (isJackUsed(inputJack))
 	    throw new IllegalArgumentException(
-		    "A wire is already going to the input terminal!");
+		    "The input jack is already in use!");
 
 	wires.put(outputJack, inputJack);
     }

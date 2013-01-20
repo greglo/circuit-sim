@@ -2,7 +2,9 @@ package model.gates;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Abstract class from circuit components which take inputs and return outputs.
@@ -75,6 +77,14 @@ public abstract class AbstractGate {
 	    throw new IllegalArgumentException(
 		    "AbstractGate.getInputJack(port) port out of bounds!");
     }
+    
+    /**
+     * Return an iterator across the input jacks on the gate
+     * @return	
+     */
+    public Iterator<Jack> getInputJacks() {
+	return new InputJackIterator();
+    }
 
     /**
      * Get the Jack object attached to a specific port of the gate
@@ -89,6 +99,14 @@ public abstract class AbstractGate {
 	else
 	    throw new IllegalArgumentException(
 		    "AbstractGate.getOutputJack(port) port out of bounds!");
+    }
+    
+    /**
+     * Return an iterator across the output jacks on the gate
+     * @return	
+     */
+    public Iterator<Jack> getOutputJacks() {
+	return new OutputJackIterator();
     }
 
     protected boolean getInput(int port) {
@@ -204,4 +222,47 @@ public abstract class AbstractGate {
     }
 
     public abstract AbstractGate clone();
+    
+    private class InputJackIterator implements Iterator<Jack> {
+	private int port = 0;
+	
+	@Override
+	public boolean hasNext() {
+	    return (port < inputJacks.length);
+	}
+
+	@Override
+	public Jack next() {
+	    if (hasNext())
+		return inputJacks[port++];
+	    else
+		throw new NoSuchElementException("InputJackIterator: No more elements");
+	}
+
+	@Override
+	public void remove() {
+	}
+    }
+    
+    private class OutputJackIterator implements Iterator<Jack> {
+	private int port = 0;
+	
+	@Override
+	public boolean hasNext() {
+	    return (port < outputJacks.length);
+	}
+
+	@Override
+	public Jack next() {
+	    if (hasNext())
+		return outputJacks[port++];
+	    else
+		throw new NoSuchElementException("InputJackIterator: No more elements");
+	}
+
+	@Override
+	public void remove() {
+	}
+    }
+    
 }
