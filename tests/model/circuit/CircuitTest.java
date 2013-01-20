@@ -25,7 +25,7 @@ public class CircuitTest {
     }
     
     @Test
-    public void test2Input() {
+    public void test2Inputs() {
 	Circuit circuit = new Circuit();
 	Toggle toggle1 = new Toggle();
 	Toggle toggle2 = new Toggle();
@@ -42,6 +42,40 @@ public class CircuitTest {
 	assertFalse("1 AND 0 == 0", and.getOutput(0));
 	toggle2.flip();
 	assertTrue("1 AND 1 == 0", and.getOutput(0));
+    }
+    
+    @Test
+    public void testRemoveWire() {
+	Circuit circuit = new Circuit();
+	Toggle toggle = new Toggle();
+	Not not = new Not(2);
+	
+	circuit.addGate(toggle);
+	circuit.addGate(not);
+	circuit.addWire(toggle.getOutputJack(0), not.getInputJack(0));
+	
+	// Remove by output jack (if it doesn't work, line after will throw exception)
+	circuit.removeWire(toggle.getOutputJack(0));
+	circuit.addWire(toggle.getOutputJack(0), not.getInputJack(0));
+	
+	// Remove by input jack (if it doesn't work, line after will throw exception)
+	circuit.removeWire(not.getInputJack(0));
+	circuit.addWire(toggle.getOutputJack(0), not.getInputJack(0));
+	
+	assertTrue(not.getOutput(0));
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testException() {
+	Circuit circuit = new Circuit();
+	Toggle toggle = new Toggle();
+	And and = new And(2);
+	
+	circuit.addGate(toggle);
+	circuit.addGate(and);
+	circuit.addWire(toggle.getOutputJack(0), and.getInputJack(0));
+	// Should throw an exception on next line
+	circuit.addWire(toggle.getOutputJack(0), and.getInputJack(1));
     }
 
 }

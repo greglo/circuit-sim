@@ -1,11 +1,12 @@
 package model.circuit;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 import model.gates.AbstractGate;
 import model.gates.GateStatusListener;
@@ -21,7 +22,7 @@ import model.gates.Jack;
  */
 public class Circuit implements GateStatusListener {
     private final Set<AbstractGate> gates = new HashSet<AbstractGate>();
-    private final Map<Jack, Jack> wires = new HashMap<Jack, Jack>();
+    private final BiMap<Jack, Jack> wires = HashBiMap.create();
 
     private long systemTime = 0;
     private List<ClockSignalListener> clockSignalListeners = new ArrayList<ClockSignalListener>();
@@ -29,9 +30,11 @@ public class Circuit implements GateStatusListener {
     public Circuit() {
     }
 
-    /** 
+    /**
      * Add a Gate to the circuit
-     * @param gate	The gate to be added
+     * 
+     * @param gate
+     *            The gate to be added
      */
     public void addGate(AbstractGate gate) {
 	if (gates.add(gate))
@@ -40,7 +43,9 @@ public class Circuit implements GateStatusListener {
 
     /**
      * Remove a Gate from the circuit
-     * @param gate	The gate to be removed
+     * 
+     * @param gate
+     *            The gate to be removed
      */
     public void removeGate(AbstractGate gate) {
 	// TODO: remove wires coming to/from the gate
@@ -78,22 +83,17 @@ public class Circuit implements GateStatusListener {
     }
 
     /**
-     * Removes the wire coming out of an output jack
+     * Removes (if it exists) the wire attached to a Jack. The Jack may be
+     * either the input or the output jack
      * 
-     * @param outputJack
-     *            The output jack of a gate in the circuit
+     * @param jack
+     *            The jack at either end of the wire
      */
-    public void removeWire(Jack outputJack) {
-	// TODO: What about removing wires by inputJack? We can't overload,
-	// since both are of type Jack... Do we need to change that? Otherwise
-	// just by method names
-	// TODO: Also if we were to remove by inputJack, how would we ensure
-	// constant lookup time? We could use another HashMap... I am warming to
-	// that idea, it does mean duplicated data though... Why doesn't the
-	// Java util provide a bijectional map implementation!? Ahhhhghfjdk429
-	// Doesn't Google provide a BiMap or something? Stop writing this and
-	// look dammit!
-	wires.remove(outputJack);
+    public void removeWire(Jack jack) {
+	// Try to remove the wire assuming we were given an output jack, if that
+	// fails try assuming we were given an input jack
+	if (wires.remove(jack) == null)
+	    wires.inverse().remove(jack);
     }
 
     /**
@@ -136,6 +136,9 @@ public class Circuit implements GateStatusListener {
 	// Also, only propagate for jacks which changed?
 	// Alternatively, add `gate` to a set of 'dirty' gates, and update
 	// and propagate through one wire every clock tick?
+	// On second thoughts, that is not a fantastic idea. Don't we want the
+	// propagation delay for gates to be at least an order smaller than an
+	// expected Timer period?
 	for (int port = 0; port < gate.getNumOutputs(); port++) {
 	    Jack outputJack = gate.getOutputJack(port);
 	    Jack nextJack = wires.get(outputJack);
