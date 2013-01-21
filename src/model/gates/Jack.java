@@ -46,7 +46,7 @@ public class Jack {
      * 
      * @return Whether the Jack is on or not
      */
-    public boolean isOn() {
+    protected boolean isOn() {
 	return isOn;
     }
 
@@ -55,7 +55,7 @@ public class Jack {
      * 
      * @param isOn
      */
-    public void setOn(boolean isOn) {
+    protected void setOn(boolean isOn) {
 	this.isOn = isOn;
     }
 }

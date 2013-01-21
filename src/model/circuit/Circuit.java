@@ -51,17 +51,35 @@ public class Circuit implements GateStatusListener {
     public void removeGate(AbstractGate gate) {
 	if (gates.remove(gate)) {
 	    gate.removeListener(this);
-	    
+
 	    // Remove all wires going into this gate
 	    Iterator<Jack> inputJackIter = gate.getInputJacks();
 	    while (inputJackIter.hasNext())
 		removeWire(inputJackIter.next());
-	    
+
 	    // Remove all wires coming out of this gate
 	    Iterator<Jack> outputJackIter = gate.getOutputJacks();
 	    while (outputJackIter.hasNext())
 		removeWire(outputJackIter.next());
 	}
+    }
+
+    /**
+     * Return the number of gates in the circuit
+     * 
+     * @return
+     */
+    public int numGates() {
+	return gates.size();
+    }
+
+    /**
+     * Return an iterator across all the gates in the circuit
+     * 
+     * @return
+     */
+    public Iterator<AbstractGate> getGates() {
+	return gates.iterator();
     }
 
     /**
@@ -163,6 +181,7 @@ public class Circuit implements GateStatusListener {
 	for (int port = 0; port < gate.getNumOutputs(); port++) {
 	    Jack outputJack = gate.getOutputJack(port);
 	    Jack nextJack = wires.get(outputJack);
+
 	    if (nextJack != null)
 		nextJack.getGate().setInput(nextJack.getPort(),
 			gate.getOutput(port));

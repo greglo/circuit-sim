@@ -1,6 +1,10 @@
 package model.circuit;
 
 import static org.junit.Assert.*;
+
+import java.util.Iterator;
+
+import model.gates.AbstractGate;
 import model.gates.basic.And;
 import model.gates.basic.Not;
 import model.gates.io.Toggle;
@@ -111,6 +115,28 @@ public class CircuitTest {
     public void testRemoveGateNull() {
 	Circuit circuit = new Circuit();
 	circuit.removeGate(null);
+    }
+    
+    @Test 
+    public void testNumGates() {
+	Circuit circuit = new Circuit();
+	assertEquals(circuit.numGates(), 0);
+	circuit.addGate(new Not());
+	assertEquals(circuit.numGates(), 1);
+	circuit.addGate(new And());
+	assertEquals(circuit.numGates(), 2);
+    }
+    
+    @Test public void testGetGates() {
+	Circuit circuit = new Circuit();
+	Iterator<AbstractGate> gateIter = circuit.getGates();
+	
+	assertFalse("Circuit initialised with no gates", gateIter.hasNext());
+	
+	circuit.addGate(new Not());
+	gateIter = circuit.getGates();
+	assertTrue("Gates returned in iterator", gateIter.hasNext());
+	assertEquals("Correct gates returned", gateIter.next().getClass(), Not.class);
     }
 
 }

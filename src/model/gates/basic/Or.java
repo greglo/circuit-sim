@@ -32,7 +32,7 @@ public class Or extends AbstractGate {
 	boolean anyTrue = false;
 
 	while (i < inputJacks.length && !anyTrue) {
-	    anyTrue = inputJacks[i].isOn();
+	    anyTrue = getInput(i);
 	    i++;
 	}
 

@@ -32,7 +32,7 @@ public class And extends AbstractGate {
 	boolean allTrue = true;
 
 	while (i < inputJacks.length && allTrue) {
-	    allTrue = inputJacks[i].isOn();
+	    allTrue = getInput(i);
 	    i++;
 	}
 
